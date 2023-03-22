@@ -1,0 +1,9 @@
+{
+  "name": "debt-calculator",
+  "version": "0.0.0",
+  "description": "Debt Calculator",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  }
+}
