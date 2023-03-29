@@ -5,7 +5,6 @@ calculate.addEventListener("submit", function () {
     let intRate = parseFloat(document.getElementById("intRate").value);
     //let numMonths = parseFloat(document.getElementById("numMonths").value);
     let payments = parseFloat(document.getElementById("payments").value);
-    let numPayments;
     let interest;
     let dollarFormatting = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -16,6 +15,7 @@ calculate.addEventListener("submit", function () {
     console.log(payments);
     if (totDebt > 0) {
         let numPayments = 0;
+        let accruedInt = 0;
         let table = document.getElementById("paymentPlan");
         let header = table.createTHead();
         let row = header.insertRow(0);
@@ -23,13 +23,14 @@ calculate.addEventListener("submit", function () {
         let header2 = row.insertCell(1);
         let header3 = row.insertCell(2);
         let header4 = row.insertCell(3);
-        header1.innerHTML = "Payment Number";
+        header1.innerHTML = "Payment #";
         header2.innerHTML = "Remaining Debt";
         header3.innerHTML = "Interest Amount";
         header4.innerHTML = "Something";
         do {
             interest = totDebt * (intRate / 100 / 12);
             totDebt = totDebt + interest - payments;
+            accruedInt += interest;
             numPayments++;
             let row = table.insertRow(-1);
             let cell1 = row.insertCell(0);
@@ -44,5 +45,7 @@ calculate.addEventListener("submit", function () {
             console.log(totDebt);
         }
         while (totDebt > 0);
+        let overpayBalance = dollarFormatting.format(Math.abs(totDebt));
+        console.log(overpayBalance);
     }
 });
