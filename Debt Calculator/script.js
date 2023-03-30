@@ -1,3 +1,36 @@
+let myHeaders = new Headers();
+myHeaders.append("apikey", "");
+
+let requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+    headers: myHeaders
+};
+
+fetch("https://api.apilayer.com/exchangerates_data/latest?symbols=EUR%2CCAD%2CAUD%2CJPY&base=USD", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        console.log(result.rates)
+        let intro = document.getElementById("currencyIntro");
+        intro.innerHTML = "This is the exchange rate of a few currencies with $1 USD."
+        let table = document.getElementById("currency");
+        let header = table.createTHead();
+        let row = header.insertRow(0);
+        let header1 = row.insertCell(0);
+        header1.innerHTML = "$1 USD to other currency";
+        for (const property in result.rates) {
+            console.log(`${property}: ${result.rates[property]}`);
+            let row = table.insertRow(-1);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            cell1.innerHTML = property;
+            cell2.innerHTML = result.rates[property];
+        }
+    })
+    .catch(error => console.log('error', error));
+
+//Debt Calculator
+
 const calculate = document.getElementById("calculationForm");
 calculate.addEventListener("submit", function () {
     event.preventDefault();
@@ -5,18 +38,28 @@ calculate.addEventListener("submit", function () {
     let intRate = parseFloat(document.getElementById("intRate").value);
     //let numMonths = parseFloat(document.getElementById("numMonths").value);
     let payments = parseFloat(document.getElementById("payments").value);
-    let interest;
+    let interest = totDebt * (intRate / 100 / 12);
     let dollarFormatting = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
     });
-    console.log(totDebt);
-    console.log(intRate);
-    console.log(payments);
-    if (totDebt > 0) {
+
+    //error catching
+
+    if (totDebt <= 0) {
+        alert("There is no debt")
+    }
+
+    //preparing the table
+
+    else if (interest >= payments) {
+        alert(`The amount to pay must be more than ${dollarFormatting.format(interest)} in order to pay off debt.`)
+    }
+    else {
         let numPayments = 0;
         let accruedInt = 0;
         let table = document.getElementById("paymentPlan");
+        table.innerHTML = "";
         let header = table.createTHead();
         let row = header.insertRow(0);
         let header1 = row.insertCell(0);
@@ -24,12 +67,16 @@ calculate.addEventListener("submit", function () {
         let header3 = row.insertCell(2);
         let header4 = row.insertCell(3);
         header1.innerHTML = "Payment #";
-        header2.innerHTML = "Remaining Debt";
+        header2.innerHTML = "Previous Debt";
         header3.innerHTML = "Interest Amount";
-        header4.innerHTML = "Something";
+        header4.innerHTML = "New Balance";
+
+        //doing math and finishing the table
+
         do {
+            let previousDebt = totDebt;
             interest = totDebt * (intRate / 100 / 12);
-            totDebt = totDebt + interest - payments;
+            let newDebt = previousDebt + interest - payments;
             accruedInt += interest;
             numPayments++;
             let row = table.insertRow(-1);
@@ -38,14 +85,16 @@ calculate.addEventListener("submit", function () {
             let cell3 = row.insertCell(2);
             let cell4 = row.insertCell(3);
             cell1.innerHTML = numPayments;
-            cell2.innerHTML = dollarFormatting.format(totDebt);
+            cell2.innerHTML = dollarFormatting.format(previousDebt);
             cell3.innerHTML = dollarFormatting.format(interest);
-            cell4.innerHTML = "NEW CELL4";
-            console.log(numPayments);
-            console.log(totDebt);
+            cell4.innerHTML = dollarFormatting.format(newDebt);
+            totDebt = newDebt;
         }
         while (totDebt > 0);
         let overpayBalance = dollarFormatting.format(Math.abs(totDebt));
         console.log(overpayBalance);
+        let summary = document.getElementById("summary");
+        summary.innerHTML = `The debt will be paid off in ${numPayments} month(s) with total interest paid 
+        being ${dollarFormatting.format(accruedInt)} and ${overpayBalance} left over from last payment.`
     }
 });

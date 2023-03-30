@@ -1,7 +1,7 @@
 ﻿html {
     padding: 0;
     margin: 0;
-    background-color: #0469b6
+    background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
 }
 
 h1 {
@@ -10,9 +10,16 @@ h1 {
     text-shadow: 1px 1px black;
 }
 
+h2{
+    text-shadow: .5px .5px black;
+}
+
 body {
     padding-bottom: 2.5em;
     font-family: 'Times New Roman', Times, serif;
+}
+#mainApp{
+    margin: 0 1em 3em 0;
 }
 table, th, td{
     border: 3px solid black;
@@ -20,4 +27,19 @@ table, th, td{
 }
 #calculationForm{
     margin-bottom: 2em;
+}
+#summary{
+    font-weight:bold;
+    font-size:1.15em
+}
+@media only screen and (min-width: 800px) {
+    #totApp{
+        display:flex;
+    }
+    #mainApp{
+        flex:70%;
+    }
+    #subApp{
+        flex:30%;
+    }
 }
