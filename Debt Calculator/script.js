@@ -44,18 +44,10 @@ calculate.addEventListener("submit", function () {
         currency: 'USD',
     });
 
-    //error catching
-
-    if (totDebt <= 0) {
-        alert("There is no debt")
-    }
-
-    //preparing the table
-
-    else if (interest >= payments) {
-        alert(`The amount to pay must be more than ${dollarFormatting.format(interest)} in order to pay off debt.`)
-    }
-    else {
+    function debtCalculator(x, y, z) {
+        x = totDebt;
+        y = intRate;
+        z = payments;
         let numPayments = 0;
         let accruedInt = 0;
         let table = document.getElementById("paymentPlan");
@@ -74,9 +66,9 @@ calculate.addEventListener("submit", function () {
         //doing math and finishing the table
 
         do {
-            let previousDebt = totDebt;
-            interest = totDebt * (intRate / 100 / 12);
-            let newDebt = previousDebt + interest - payments;
+            let previousDebt = x;
+            interest = x * (y / 100 / 12);
+            let newDebt = previousDebt + interest - z;
             accruedInt += interest;
             numPayments++;
             let row = table.insertRow(-1);
@@ -88,13 +80,24 @@ calculate.addEventListener("submit", function () {
             cell2.innerHTML = dollarFormatting.format(previousDebt);
             cell3.innerHTML = dollarFormatting.format(interest);
             cell4.innerHTML = dollarFormatting.format(newDebt);
-            totDebt = newDebt;
+            x = newDebt;
         }
-        while (totDebt > 0);
-        let overpayBalance = dollarFormatting.format(Math.abs(totDebt));
+        while (x > 0);
+        let overpayBalance = dollarFormatting.format(Math.abs(x));
         console.log(overpayBalance);
         let summary = document.getElementById("summary");
         summary.innerHTML = `The debt will be paid off in ${numPayments} month(s) with total interest paid 
         being ${dollarFormatting.format(accruedInt)} and ${overpayBalance} left over from last payment.`
+    }
+
+    if (totDebt <= 0) {
+        alert("There is no debt")
+    }
+
+    else if (interest >= payments) {
+        alert(`The amount to pay must be more than ${dollarFormatting.format(interest)} in order to pay off debt.`)
+    }
+    else {
+        debtCalculator();
     }
 });
