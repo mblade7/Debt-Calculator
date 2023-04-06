@@ -101,3 +101,17 @@ calculate.addEventListener("submit", function () {
         debtCalculator();
     }
 });
+
+const numberVerification = document.getElementsByClassName("formInput")
+for (i = 0; i < numberVerification.length; i++) {
+    numberVerification[i].addEventListener("input", function (e) {
+        const pattern = /^\d+(\.\d{1,2})?$/;
+        const currentValue = e.target.value;
+        if (pattern.test(currentValue) === false) {
+            document.getElementById("warning").style.display = "block";
+        }
+        else {
+            document.getElementById("warning").style.display = "none";
+        }
+    })
+};

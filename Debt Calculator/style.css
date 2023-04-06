@@ -32,6 +32,11 @@ table, th, td{
     font-weight:bold;
     font-size:1.15em
 }
+#warning{
+    color:red;
+    display:none;
+    font-weight:bold;
+}
 @media only screen and (min-width: 800px) {
     #totApp{
         display:flex;
