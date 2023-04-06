@@ -45,9 +45,6 @@ calculate.addEventListener("submit", function () {
     });
 
     function debtCalculator(x, y, z) {
-        x = totDebt;
-        y = intRate;
-        z = payments;
         let numPayments = 0;
         let accruedInt = 0;
         let table = document.getElementById("paymentPlan");
@@ -98,7 +95,7 @@ calculate.addEventListener("submit", function () {
         alert(`The amount to pay must be more than ${dollarFormatting.format(interest)} in order to pay off debt.`)
     }
     else {
-        debtCalculator();
+        debtCalculator(totDebt,intRate,payments);
     }
 });
 

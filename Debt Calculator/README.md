@@ -5,9 +5,9 @@ The subgoal is to give the project the ability to grow into other financial area
 
 Project Features include:
 1. Uses 3 variables selected by user to return a new value (in this case the debt calculations)
-2. Visualize data in a user friendly way (in this case, tables).
+2. Use a regular expression to validate user input and either prevent the invalid input or inform the user about it (in all cases prevent invalid input from being stored or saved).
 3. Retrieve data from a third-party API and use it to display something within your app (the foreign exchange currency to meet subgoal)
-4. I have created some error handling in relation to user input, though I'm unsure if it includes every single situation.
+
 	a. made all user entry sections required to use
 	b. if user puts in an impossible request, then the app will alert them and also provide a suggestion in one scenario.
 
